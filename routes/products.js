@@ -3,6 +3,7 @@ import { get, store, show, update, destroy } from '../controllers/productControl
 
 const router = express.Router();
 
+// TODO: authentication for routes
 router.get('', get);
 router.post('', store);
 router.get('/:id', show);

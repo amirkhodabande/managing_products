@@ -15,7 +15,8 @@ export function get(req, res) {
         .catch(err => {
             res.status(500).json({
                 'success': false,
-                'message': 'Fucked up my friend, just leave this place :))'
+                // TODO: localization for messages
+                'message': 'Something went wrong, please try later!'
             })
         });
 }
@@ -47,13 +48,14 @@ export function store(req, res) {
         .then(() => {
             res.status(201).json({
                 'success': true,
-                'message': 'Your fucking product created successfully!'
+                'message': 'Operation finished successfully!'
             })
         })
         .catch(err => {
+            // TODO: log error in file
             res.status(500).json({
-                success: true,
-                message: 'Go fuck off my friend ;)) ' + err.message 
+                success: false,
+                message: 'Operation failed!' 
             })
         });
 }
@@ -69,7 +71,7 @@ export function show(req, res) {
         .catch(err => {
             res.status(500).json({
                 success: false,
-                message: 'fucked up :(('
+                message: 'Operation failed!'
             });
         })
 }
@@ -83,12 +85,12 @@ export function update(req, res) {
     }).then(() => {
         res.json({
             success: true,
-            message: 'Your fucking product has been updated successfully!'
+            message: 'Operation finished successfully!'
         });
     }).catch(() => {
         res.status(500).json({
             success: false,
-            message: "You have been fucked up ;))"
+            message: "Operation failed!"
         });
     });
 }
@@ -98,13 +100,13 @@ export function destroy(req, res) {
         .then(() => {
             res.json({
                 success: true,
-                message: "Done"
+                message: "Operation finished successfully!"
             });
         })
         .catch(err => {
             res.json({
                 success: false,
-                message: "Fuck"
+                message: "Operation failed!"
             })
         });
 }

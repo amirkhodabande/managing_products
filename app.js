@@ -19,7 +19,8 @@ mongoose.connect(process.env.DB_URI)
         app.listen(port, () => console.log(`Listening on port ${port}...`));
     })
     .catch(err => {
-        console.log('DB connection is fucked up!');
+        // TODO: log to file
+        console.log('Can not connect to db!');
     });
 
 app.use('/api/products', productRoutes);
