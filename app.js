@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import mongoose from 'mongoose';
 import productRoutes from './routes/products.js';
+import logger from './services/logger.js';
 
 const app = express();
 
@@ -19,7 +20,7 @@ mongoose.connect(process.env.DB_URI)
         app.listen(port, () => console.log(`Listening on port ${port}...`));
     })
     .catch(err => {
-        // TODO: log to file
+        logger.error(err.message, {stack: err.stack});
         console.log('Can not connect to db!');
     });
 

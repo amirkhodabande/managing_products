@@ -1,11 +1,12 @@
 import Joi from 'joi';
+import logger from './services/logger.js';
 import Product from "../models/product.js";
 
 export function get(req, res) {
     Product.find()
         .limit(10)
-        .sort({title: 1})
-        .select({ title: 1, description: 1}) 
+        .sort({ title: 1 })
+        .select({ title: 1, description: 1 })
         .then(products => {
             res.json({
                 'success': true,
@@ -13,6 +14,8 @@ export function get(req, res) {
             })
         })
         .catch(err => {
+            logger.error(err.message, { stack: err.stack });
+
             res.status(500).json({
                 'success': false,
                 // TODO: localization for messages
@@ -32,7 +35,7 @@ export function store(req, res) {
     });
 
     let body = req.body;
-   
+
     let validationCheck = schema.validate(body);
 
     if (validationCheck.error) {
@@ -52,10 +55,11 @@ export function store(req, res) {
             })
         })
         .catch(err => {
-            // TODO: log error in file
+            logger.error(err.message, { stack: err.stack });
+
             res.status(500).json({
                 success: false,
-                message: 'Operation failed!' 
+                message: 'Operation failed!'
             })
         });
 }
@@ -69,6 +73,8 @@ export function show(req, res) {
             });
         })
         .catch(err => {
+            logger.error(err.message, { stack: err.stack });
+
             res.status(500).json({
                 success: false,
                 message: 'Operation failed!'
@@ -88,6 +94,8 @@ export function update(req, res) {
             message: 'Operation finished successfully!'
         });
     }).catch(() => {
+        logger.error(err.message, { stack: err.stack });
+
         res.status(500).json({
             success: false,
             message: "Operation failed!"
@@ -104,6 +112,8 @@ export function destroy(req, res) {
             });
         })
         .catch(err => {
+            logger.error(err.message, { stack: err.stack });
+
             res.json({
                 success: false,
                 message: "Operation failed!"
