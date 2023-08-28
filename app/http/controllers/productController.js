@@ -1,6 +1,6 @@
 import Joi from 'joi';
-import logger from '../services/logger.js';
-import Product from "../models/product.js";
+import logger from '../../services/logger.js';
+import Product from "../../models/product.js";
 
 export function get(req, res) {
     Product.find()
