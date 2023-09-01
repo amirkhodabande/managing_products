@@ -84,7 +84,22 @@ export function show(req, res) {
 }
 
 export function update(req, res) {
+    const schema = Joi.object({
+        title: Joi.string()
+            .min(3)
+            .required(),
+        description: Joi.string()
+            .min(3)
+            .required(),
+    });
+
     let body = req.body;
+
+    let validationCheck = schema.validate(body);
+
+    if (validationCheck.error) {
+        res.status(422).json(validationCheck.error);
+    }
 
     Product.findByIdAndUpdate(req.params.id, {
         title: body.title,
