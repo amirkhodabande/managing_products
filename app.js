@@ -2,10 +2,25 @@ import 'dotenv/config';
 import express from 'express';
 import mongoose from 'mongoose';
 import productRoutes from './routes/products.js';
-import logger from './services/logger.js';
+import logger from './app/services/logger.js';
+import i18next from 'i18next';
+import i18nexFsBackend from 'i18next-fs-backend';
+import i18nextHttpMiddleware from 'i18next-http-middleware';
+
+i18next
+    .use(i18nexFsBackend)
+    .use(i18nextHttpMiddleware.LanguageDetector)
+    .init({
+        backend: {
+            loadPath: './locales/{{lng}}/{{ns}}.json',
+        },
+        fallbackLng: 'en',
+        preload: ['en', 'fa']
+    });
 
 const app = express();
 
+app.use(i18nextHttpMiddleware.handle(i18next));
 app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
 
@@ -20,7 +35,7 @@ mongoose.connect(process.env.DB_URI)
         app.listen(port, () => console.log(`Listening on port ${port}...`));
     })
     .catch(err => {
-        logger.error(err.message, {stack: err.stack});
+        logger.error(err.message, { stack: err.stack });
         console.log('Can not connect to db!');
     });
 

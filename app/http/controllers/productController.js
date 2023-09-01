@@ -9,17 +9,17 @@ export function get(req, res) {
         .select({ title: 1, description: 1 })
         .then(products => {
             res.json({
-                'success': true,
-                'data': products
+                success: true,
+                data: products
             })
         })
         .catch(err => {
             logger.error(err.message, { stack: err.stack });
 
             res.status(500).json({
-                'success': false,
-                // TODO: localization for messages
-                'message': 'Something went wrong, please try later!'
+                success: false,
+                error: req.t('messages.failed'),
+                data: []
             })
         });
 }
@@ -50,8 +50,8 @@ export function store(req, res) {
     product.save()
         .then(() => {
             res.status(201).json({
-                'success': true,
-                'message': 'Operation finished successfully!'
+                success: true,
+                message: req.t('messages.success'),
             })
         })
         .catch(err => {
@@ -59,7 +59,7 @@ export function store(req, res) {
 
             res.status(500).json({
                 success: false,
-                message: 'Operation failed!'
+                error: req.t('messages.failed'),
             })
         });
 }
@@ -69,6 +69,7 @@ export function show(req, res) {
         .then(product => {
             res.json({
                 success: true,
+                message: req.t('messages.success'),
                 data: product
             });
         })
@@ -77,7 +78,7 @@ export function show(req, res) {
 
             res.status(500).json({
                 success: false,
-                message: 'Operation failed!'
+                error: req.t('messages.failed'),
             });
         })
 }
@@ -91,14 +92,14 @@ export function update(req, res) {
     }).then(() => {
         res.json({
             success: true,
-            message: 'Operation finished successfully!'
+            message: req.t('messages.success'),
         });
     }).catch(() => {
         logger.error(err.message, { stack: err.stack });
 
         res.status(500).json({
             success: false,
-            message: "Operation failed!"
+            error: req.t('messages.failed'),
         });
     });
 }
@@ -108,7 +109,7 @@ export function destroy(req, res) {
         .then(() => {
             res.json({
                 success: true,
-                message: "Operation finished successfully!"
+                message: req.t('messages.success'),
             });
         })
         .catch(err => {
@@ -116,7 +117,7 @@ export function destroy(req, res) {
 
             res.json({
                 success: false,
-                message: "Operation failed!"
+                error: req.t('messages.failed'),
             })
         });
 }

@@ -1,0 +1,6 @@
+{
+    "messages": {
+        "success": "Operation finished successfully!",
+        "failed": "Operation failed!"
+    }
+}
