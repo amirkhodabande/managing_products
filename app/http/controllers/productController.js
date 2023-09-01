@@ -1,4 +1,3 @@
-import Joi from 'joi';
 import logger from '../../services/logger.js';
 import Product from "../../models/product.js";
 
@@ -25,22 +24,7 @@ export function get(req, res) {
 }
 
 export function store(req, res) {
-    const schema = Joi.object({
-        title: Joi.string()
-            .min(3)
-            .required(),
-        description: Joi.string()
-            .min(3)
-            .required(),
-    });
-
     let body = req.body;
-
-    let validationCheck = schema.validate(body);
-
-    if (validationCheck.error) {
-        res.status(422).json(validationCheck.error);
-    }
 
     let product = new Product({
         title: body.title,
@@ -84,22 +68,7 @@ export function show(req, res) {
 }
 
 export function update(req, res) {
-    const schema = Joi.object({
-        title: Joi.string()
-            .min(3)
-            .required(),
-        description: Joi.string()
-            .min(3)
-            .required(),
-    });
-
     let body = req.body;
-
-    let validationCheck = schema.validate(body);
-
-    if (validationCheck.error) {
-        res.status(422).json(validationCheck.error);
-    }
 
     Product.findByIdAndUpdate(req.params.id, {
         title: body.title,
