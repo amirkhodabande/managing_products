@@ -1,8 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
-import mongoose from 'mongoose';
-import productRoutes from './routes/products.js';
-import logger from './app/services/logger.js';
+import productRoutes from '../routes/products.js';
 import i18next from 'i18next';
 import i18nexFsBackend from 'i18next-fs-backend';
 import i18nextHttpMiddleware from 'i18next-http-middleware';
@@ -29,14 +27,6 @@ app.use((req, res, next) => {
     next();
 })
 
-mongoose.connect(process.env.DB_URI)
-    .then(() => {
-        const port = process.env.PORT || 3000;
-        app.listen(port, () => console.log(`Listening on port ${port}...`));
-    })
-    .catch(err => {
-        logger.error(err.message, { stack: err.stack });
-        console.log('Can not connect to db!');
-    });
-
 app.use('/api/products', productRoutes);
+
+export default app;
