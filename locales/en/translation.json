@@ -1,6 +1,8 @@
 {
     "messages": {
+        "500": "Something went wrong, please try later",
         "success": "Operation finished successfully!",
-        "failed": "Operation failed!"
+        "failed": "Operation failed!",
+        "user-exists": "Users exists, please try later!"
     }
 }

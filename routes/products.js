@@ -6,7 +6,6 @@ import productUpdateRequest from '../app/http/requests/productUpdateRequest.js';
 
 const router = express.Router();
 
-// TODO: authentication for routes
 router.get('', get);
 router.post('', validationMiddleware(productStoreRequest), store);
 router.get('/:id', show);

@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import productRoutes from '../routes/products.js';
+import authRoutes from '../routes/auth.js';
 import i18next from 'i18next';
 import i18nexFsBackend from 'i18next-fs-backend';
 import i18nextHttpMiddleware from 'i18next-http-middleware';
@@ -28,5 +29,6 @@ app.use((req, res, next) => {
 })
 
 app.use('/api/products', productRoutes);
+app.use('/api/auth', authRoutes);
 
 export default app;
