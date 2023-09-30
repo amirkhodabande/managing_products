@@ -4,20 +4,23 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 export async function register(req, res) {
+    let { first_name, last_name, email, password } = req.body;
+
+    const oldUser = await User.findOne({ email });
+
+    if (oldUser) {
+        return res.json({
+            success: false,
+            error: req.t('messages.user-exists'),
+            data: []
+        }, 409)
+    }
+
+    const session = await User.startSession();
+    session.startTransaction();
+
     try {
-        let { first_name, last_name, email, password } = req.body;
-
-        const oldUser = await User.findOne({ email });
-
-        if (oldUser) {
-            return res.json({
-                success: false,
-                error: req.t('messages.user-exists'),
-                data: []
-            }, 409)
-        }
-
-        const user = User.create({
+        const user = User.session(session).create({
             first_name,
             last_name,
             email: email,
@@ -26,13 +29,17 @@ export async function register(req, res) {
 
         const token = jwt.sign(
             { user_id: (await user)._id, email },
-            process.env.TOKEN_KEY,
+            process.env.TOKEN_KEYqq,
             {
                 expiresIn: "1h"
             }
         );
+        console.log('out');
 
-        res.json({
+        await session.commitTransaction();
+        session.endSession();
+
+        return res.json({
             success: true,
             error: req.t('messages.success'),
             data: {
@@ -40,9 +47,11 @@ export async function register(req, res) {
             }
         }, 201)
     } catch (err) {
-        // TODO: db transactions
         logger.error(err.message, { stack: err.stack });
-        
+
+        await session.abortTransaction();
+        session.endSession();
+
         res.json({
             success: false,
             error: req.t('messages.500'),
