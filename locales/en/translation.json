@@ -1,6 +1,7 @@
 {
     "messages": {
-        "500": "Something went wrong, please try later",
+        "500": "Something went wrong, please try later!",
+        "400": "Invalid credentials!",
         "success": "Operation finished successfully!",
         "failed": "Operation failed!",
         "user-exists": "Users exists, please try later!"

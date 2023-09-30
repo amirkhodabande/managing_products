@@ -1,3 +1,4 @@
+import logger from '../../services/logger.js';
 import User from '../../models/user.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -23,7 +24,7 @@ export async function register(req, res) {
             password: await bcrypt.hash(password, 10)
         });
 
-        user.token = jwt.sign(
+        const token = jwt.sign(
             { user_id: (await user)._id, email },
             process.env.TOKEN_KEY,
             {
@@ -34,10 +35,14 @@ export async function register(req, res) {
         res.json({
             success: true,
             error: req.t('messages.success'),
-            data: []
+            data: {
+                token: token
+            }
         }, 201)
-    } catch (error) {
+    } catch (err) {
         // TODO: db transactions
+        logger.error(err.message, { stack: err.stack });
+        
         res.json({
             success: false,
             error: req.t('messages.500'),
@@ -46,7 +51,42 @@ export async function register(req, res) {
     }
 }
 
-export function login(req, res) {
-    let body = req.body;
-    res.end('a');
+export async function login(req, res) {
+    try {
+        const { email, password } = req.body;
+
+        const user = await User.findOne({ email });
+
+        if (!user && !(await bcrypt.compare(password, user.password))) {
+            return res.json({
+                success: false,
+                error: req.t('messages.400'),
+                data: []
+            }, 400)
+        }
+
+        const token = jwt.sign(
+            { user_id: (await user)._id, email },
+            process.env.TOKEN_KEY,
+            {
+                expiresIn: "1h"
+            }
+        );
+
+        return res.json({
+            success: false,
+            error: req.t('messages.400'),
+            data: {
+                token: token
+            }
+        }, 400)
+    } catch (err) {
+        logger.error(err.message, { stack: err.stack });
+
+        res.json({
+            success: false,
+            error: req.t('messages.500'),
+            data: []
+        }, 500)
+    }
 }
