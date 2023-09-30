@@ -2,6 +2,8 @@
     "messages": {
         "500": "Something went wrong, please try later!",
         "400": "Invalid credentials!",
+        "403": "A token is required for authentication!",
+        "401": "Unauthorized!",
         "success": "Operation finished successfully!",
         "failed": "Operation failed!",
         "user-exists": "Users exists, please try later!"

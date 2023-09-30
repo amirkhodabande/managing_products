@@ -5,6 +5,7 @@ import authRoutes from '../routes/auth.js';
 import i18next from 'i18next';
 import i18nexFsBackend from 'i18next-fs-backend';
 import i18nextHttpMiddleware from 'i18next-http-middleware';
+import auth from '../app/http/middleware/authMiddleware.js';
 
 i18next
     .use(i18nexFsBackend)
@@ -28,7 +29,7 @@ app.use((req, res, next) => {
     next();
 })
 
-app.use('/api/products', productRoutes);
+app.use('/api/products', auth, productRoutes);
 app.use('/api/auth', authRoutes);
 
 export default app;
