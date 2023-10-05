@@ -4,6 +4,7 @@ import validationMiddleware from '../app/http/middleware/validationMiddleware.js
 import productStoreRequest from '../app/http/requests/productStoreRequest.js';
 import productUpdateRequest from '../app/http/requests/productUpdateRequest.js';
 
+//TODO: write tests
 const router = express.Router();
 
 router.get('', get);

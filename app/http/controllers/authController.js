@@ -20,16 +20,16 @@ export async function register(req, res) {
     session.startTransaction();
 
     try {
-        const user = User.session(session).create({
+        const user = User.create({
             first_name,
             last_name,
             email: email,
             password: await bcrypt.hash(password, 10)
-        });
+        }, { session: session });
 
         const token = jwt.sign(
             { user_id: (await user)._id, email },
-            process.env.TOKEN_KEYqq,
+            process.env.TOKEN_KEY,
             {
                 expiresIn: "1h"
             }

@@ -8,8 +8,7 @@ export default Joi.object({
         .min(3)
         .required(),
     email: Joi.string()
-        .min(3)
-        // TODO: unique validation
+        .email()
         .required(),
     password: Joi.string()
         .min(6)
