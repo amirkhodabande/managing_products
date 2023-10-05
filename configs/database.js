@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import logger from '../app/services/logger.js';
+import logger from '../app/helpers/logger.js';
 
 export function connect() {
     mongoose.connect(process.env.DB_URI)
