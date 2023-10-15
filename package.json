@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cross-env DOTENV_CONFIG_PATH=./test.env mocha --exit -r dotenv/config"
   },
   "author": "",
   "license": "ISC",
@@ -21,5 +21,12 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.4.1",
     "winston": "^3.10.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.10",
+    "chai-http": "^4.4.0",
+    "cross-env": "^7.0.3",
+    "mocha": "^10.2.0",
+    "sinon": "^16.1.0"
   }
 }
