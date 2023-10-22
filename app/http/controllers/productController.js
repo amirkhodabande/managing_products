@@ -1,114 +1,66 @@
-import logger from '../../helpers/logger.js';
 import Product from "../../models/product.js";
 
 class ProductController {
-    // TODO: async...
-    
-    get(req, res) {
-        Product.find()
+    async get(req, res) {
+        let products = await Product.find()
             .limit(10)
             .sort({ title: 1 })
-            .select({ title: 1, description: 1 })
-            .then(products => {
-                res.json({
-                    success: true,
-                    data: products
-                })
-            })
-            .catch(err => {
-                logger.error(err.message, { stack: err.stack });
+            .select({ title: 1, description: 1 });
 
-                res.status(500).json({
-                    success: false,
-                    error: req.t('messages.failed'),
-                    data: []
-                })
-            });
+        res.json({
+            success: true,
+            data: products
+        });
     }
 
-    store(req, res) {
+    async store(req, res) {
         let body = req.body;
 
-        let product = new Product({
+        await Product.create({
             title: body.title,
             description: body.description
         });
 
-        product.save()
-            .then(() => {
-                res.status(201).json({
-                    success: true,
-                    message: req.t('messages.success'),
-                })
-            })
-            .catch(err => {
-                logger.error(err.message, { stack: err.stack });
-
-                res.status(500).json({
-                    success: false,
-                    error: req.t('messages.failed'),
-                })
-            });
+        res.status(201).json({
+            success: true,
+            message: req.t('messages.success'),
+        });
     }
 
-    show(req, res) {
+    async show(req, res) {
         console.log(req.params.id);
-        Product.findById(req.params.id)
-            .then(product => {
-                console.log(product);
-                res.json({
-                    success: true,
-                    message: req.t('messages.success'),
-                    data: product
-                });
-            })
-            .catch(err => {
-                logger.error(err.message, { stack: err.stack });
 
-                res.status(500).json({
-                    success: false,
-                    error: req.t('messages.failed'),
-                });
-            })
-    }
+        let product = await Product.findById(req.params.id)
 
-    update(req, res) {
-        let body = req.body;
-
-        Product.findByIdAndUpdate(req.params.id, {
-            title: body.title,
-            description: body.description
-        }).then(() => {
-            res.json({
-                success: true,
-                message: req.t('messages.success'),
-            });
-        }).catch(() => {
-            logger.error(err.message, { stack: err.stack });
-
-            res.status(500).json({
-                success: false,
-                error: req.t('messages.failed'),
-            });
+        res.json({
+            success: true,
+            message: req.t('messages.success'),
+            data: product
         });
     }
 
-    destroy(req, res) {
-        Product.findByIdAndRemove(req.params.id)
-            .then(() => {
-                res.json({
-                    success: true,
-                    message: req.t('messages.success'),
-                });
-            })
-            .catch(err => {
-                logger.error(err.message, { stack: err.stack });
+    async update(req, res) {
+        let body = req.body;
 
-                res.json({
-                    success: false,
-                    error: req.t('messages.failed'),
-                })
-            });
+        await Product.findByIdAndUpdate(req.params.id, {
+            title: body.title,
+            description: body.description
+        });
+
+        res.json({
+            success: true,
+            message: req.t('messages.success'),
+        });
+    }
+
+    async destroy(req, res) {
+        await Product.findByIdAndRemove(req.params.id)
+
+        res.json({
+            success: true,
+            message: req.t('messages.success'),
+        });
+
     }
 }
 
