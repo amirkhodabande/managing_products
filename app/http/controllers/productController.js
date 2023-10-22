@@ -2,6 +2,8 @@ import logger from '../../helpers/logger.js';
 import Product from "../../models/product.js";
 
 class ProductController {
+    // TODO: async...
+    
     get(req, res) {
         Product.find()
             .limit(10)
@@ -50,8 +52,10 @@ class ProductController {
     }
 
     show(req, res) {
+        console.log(req.params.id);
         Product.findById(req.params.id)
             .then(product => {
+                console.log(product);
                 res.json({
                     success: true,
                     message: req.t('messages.success'),
