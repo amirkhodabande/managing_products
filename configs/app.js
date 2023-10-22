@@ -6,6 +6,7 @@ import i18next from 'i18next';
 import i18nexFsBackend from 'i18next-fs-backend';
 import i18nextHttpMiddleware from 'i18next-http-middleware';
 import auth from '../app/http/middleware/authMiddleware.js';
+import logger from '../app/helpers/logger.js';
 
 i18next
     .use(i18nexFsBackend)
@@ -25,8 +26,13 @@ app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
-    console.log(req.url);
     next();
+})
+
+process.on('uncaughtException', err => { 
+    logger.error(err.message, { stack: err.stack });
+
+    process.exit(0);
 })
 
 app.use('/api/products', auth, productRoutes);
