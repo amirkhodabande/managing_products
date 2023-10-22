@@ -5,7 +5,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env DOTENV_CONFIG_PATH=./test.env mocha --exit -r dotenv/config"
+    "test": "cross-env DOTENV_CONFIG_PATH=./test.env mocha --exit -r dotenv/config --"
   },
   "author": "",
   "license": "ISC",
